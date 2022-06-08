@@ -16,7 +16,7 @@ describe('visual regression test',async()=>{
     it('should be able to perfomr visual test on search suggestions',async()=>{
 
         await $('#twotabsearchtextbox').setValue('tshirts');
-        await browser.pause(2000);
+       // await browser.pause(2000);
         expect(await browser.checkElement(await $('#nav-flyout-searchAjax'),'searchbar-suggestions',{})).toEqual(0);
     })
 
