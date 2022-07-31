@@ -1,15 +1,33 @@
+const process = require('process')
+const url = require('./urls')
+const ENV = process.env.ENV
+
+if(!ENV || !['dev','qa','uat'].includes(ENV)){
+
+    process.env.ENV = "qa";
+    // console.log("Please enter valid Environment - qa | dev | uat")
+    // process.exit()
+
+}
+
 const {join} = require('path');
 exports.config = {
+
+    reporters: [['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: true,
+    }]],
     
     specs: [
-        './test/visualRegressionTests/visualTestingWithApplittols.js'
+        './test/e2eTests/*.js'
     ],
     exclude: [
     ],
     
-    maxInstances: 10,
+    maxInstances: 3,
     capabilities: [{
-        maxInstances: 5,
+        maxInstances: 3,
         browserName: 'chrome',
         acceptInsecureCerts: true
     
@@ -17,11 +35,11 @@ exports.config = {
 
     logLevel: 'error',
     bail: 0,
-    baseUrl: 'http://localhost',
+    baseUrl: url[process.env.ENV], //qa/dev/uat
     waitforTimeout: 15000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-    services: ['chromedriver',
+    services: ['selenium-standalone','intercept',
         ['image-comparison',
             {
         
@@ -34,25 +52,10 @@ exports.config = {
                 blockOutToolBar: true,
 
             }
-        ],
-        ['applitools', {
-            key: 'R0ugfvmH9SMYKK111zMuhFa8HJmFfGg2khvdCZAL8SlfM110', // can be passed here or via environment variable `APPLITOOLS_KEY`
-            serverUrl: 'https://<org>eyesapi.applitools.com', // optional, can be passed here or via environment variable `APPLITOOLS_SERVER_URL`
-            // options
-            proxy: { // optional
-                url: 'http://corporateproxy.com:8080',
-                username: 'username', // optional
-                password: 'secret', // optional
-                isHttpOnly: true // optional
-            },
-            viewport: { // optional
-                width: 1920,
-                height: 1080
-            }
-        }]
+        ]
     ],
     framework: 'mocha',
-    reporters: ['spec'],
+    
     mochaOpts: {
         ui: 'bdd',
         timeout: 120000

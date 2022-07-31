@@ -3,7 +3,7 @@ module.exports = new class ProductDescriptionPage{
 
     get productPrice(){
 
-        return $("//div[@id='corePrice_feature_div']//span[@class='a-price-whole']");
+        return $("//div[@id='corePrice_feature_div']//span/span");
     }
 
     get addToCartButton(){
@@ -11,22 +11,25 @@ module.exports = new class ProductDescriptionPage{
     }
 
     get goToCartButton(){
-        return $('#sw-gtc');
+       
+        return $("//span[@id='sw-gtc']/span[@class='a-button-inner']");
     }
 
     
     async  addProductTocartAndReturnThePrice(parentWindowId){
 
-       let allWindowHandles = await browser.getWindowHandles();
-       for(let i =0; i<allWindowHandles.lenght;i++){
-            if(allWindowHandles[i]!=parentWindowId){
+       var allWindowHandles = await browser.getWindowHandles();
+
+       for(var i = 0; i<allWindowHandles.length;i++){
+            if(allWindowHandles[i] != parentWindowId){
                 await browser.switchToWindow(allWindowHandles[i]);
                 break;
             }
 
        }
-
+       await browser.pause(2000);
        let price = await this.productPrice.getText();
+       await browser.pause(2000);
        await this.addToCartButton.click();
        return price;
 

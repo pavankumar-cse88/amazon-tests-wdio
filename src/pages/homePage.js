@@ -14,5 +14,4 @@ module.exports = new class HomePage{
         await this.searchBar.setValue(keyword);
         await this.searchBarMagnifier.click();
     }
-
 }
