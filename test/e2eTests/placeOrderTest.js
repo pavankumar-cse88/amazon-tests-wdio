@@ -16,6 +16,8 @@ describe('Place order journey', async()=>{
         await homePage.searchForGivenKeyword('Bean bag');
         let parentWindowId = await searchResultsPage.clickOnFirstProductFromSearchResults();
         let price = await productDescriptionPage.addProductTocartAndReturnThePrice(parentWindowId);
+        await productDescriptionPage.navigateToCartPage();
+        await cartPage.validatePriceFromCart(price);
         
     })
 })
@@ -30,5 +32,3 @@ describe('Place order journey', async()=>{
 
 
 
-// await productDescriptionPage.navigateToCartPage();
-        // await cartPage.validatePriceFromCart(price);

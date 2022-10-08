@@ -29,7 +29,6 @@ module.exports = new class ProductDescriptionPage{
        }
        await browser.pause(2000);
        let price = await this.productPrice.getText();
-       await browser.pause(2000);
        await this.addToCartButton.click();
        return price;
 
